@@ -8,8 +8,7 @@ import (
 type Value fmt.Stringer
 
 type ExprC interface {
-	Interp() Value
-	//Interp(env Env) Value
+	Interp(env Env) Value
 }
 
 type NumV struct {
@@ -32,7 +31,7 @@ type NumC struct {
 	X float64
 }
 
-func (n NumC) Interp() Value {
+func (n NumC) Interp(env Env) Value {
 	return NumV{n.X}
 }
 
@@ -48,26 +47,26 @@ type ifC struct {
     Y ExprC
 }
 
-func (i ifC) Interp() Value {
+func (i ifC) Interp(env Env) Value {
     if i.B == true {
-        return i.X.Interp()
+        return i.X.Interp(env)
     }
 
-    return i.Y.Interp()
+    return i.Y.Interp(env)
 }
 
 type idC struct {
     S string
 }
 
-func (i idC) Interp() Value {
-    fmt.Println(i.Interp())
+func (i idC) Interp(env Env) Value {
+    fmt.Println(i.Interp(env))
     panic("ahh")
 }
 
-func (b BinC) Interp() Value {
-	vL := b.L.Interp()
-	vR := b.R.Interp()
+func (b BinC) Interp(env Env) Value {
+	vL := b.L.Interp(env)
+	vR := b.R.Interp(env)
 	switch b.op {
 	case "+":
 		return NumV{vL.(NumV).i + vR.(NumV).i}
@@ -84,9 +83,9 @@ func (b BinC) Interp() Value {
 }
 
 type CloV struct {
-	params list.List
+	params *list.List
 	body ExprC
-	env list.List
+	env Env
 }
 
 type Binding struct {
@@ -95,7 +94,7 @@ type Binding struct {
 }
 
 type Env struct {
-	bindings list.List
+	bindings *list.List
 }
 
 func (c CloV) String() string {
@@ -104,28 +103,61 @@ func (c CloV) String() string {
 
 type AppC struct {
 	fun ExprC
-	arg list.List
+	arg *list.List
 }
 
-//COMMENTED OUT FOR NOW SO IT RUNS
-
-/*func (a AppC) Interp(env Env) Value {
-	f := a.fun.Interp()
+func (a AppC) Interp(env Env) Value {
+	f := a.fun.Interp(env)
 	switch f := f.(type) {
 	case CloV:
-		all-f := f.body.Interp(f.params, a.arg, env)
-
+		newEnv := createNewEnv(f.params, interpAll(a.arg, env), f.env)
+		return f.body.Interp(newEnv) 
 	default:
 		fmt.Println("Application of non-closure")
 	}
 	return nil
 }
 
-func (a.AppC) Interp(params list.List, arg list.List, env Env) Value {
+func interpAll(arg list.List, env Env) *list.List {
+	l := list.New()
+	for e := arg.Front(); e != nil; e = e.Next() {
+		l.PushBack(e.Value.(ExprC).Interp(env))
+	}
+	return l
+}
 
-}*/
+func createNewEnv(params list.List, arg *list.List, env Env) Env {
+	if params.Len() == arg.Len() {
+		p := params.Front()
+		a := arg.Front()
+		for {
+			if a == nil {
+				break
+			}
+
+			env.bindings.PushFront(Binding{p.Value.(string), a.Value.(Value)})
+
+			p = p.Next()
+			a = a.Next()
+		}
+	} else {
+		panic("Unequal arguments and parameters")
+	}
+	return env
+}
 
 func main() {
+	b := &BinC{"+", NumC{1}, NumC{2}}
 
+    c := &ifC{true, NumC{1}, NumC{2}}
+    d := &ifC{false, NumC{1}, NumC{2}}
 
+    fmt.Println(b)
+    //fmt.Println(b.Interp())
+
+    fmt.Println(c)
+    //fmt.Println(c.Interp())
+
+    fmt.Println(d)
+    //fmt.Println(d.Interp())
 }

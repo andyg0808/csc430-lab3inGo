@@ -2,10 +2,11 @@ package main
 
 import "testing"
 import "math"
+import "container/list"
 
 func TestInterpNumC(t *testing.T) {
 	n := NumC{5}
-	value := n.Interp().(NumV)
+	value := n.Interp(Env{list.New()}).(NumV)
 	if value.i != 5 {
 		t.Error("Incorrect result!")
 	}
@@ -13,7 +14,7 @@ func TestInterpNumC(t *testing.T) {
 
 func TestInterpBinCPlus(t *testing.T) {
 	b := BinC{"+", NumC{2}, NumC{3}}
-	value := b.Interp().(NumV)
+	value := b.Interp(Env{list.New()}).(NumV)
 	if value.i != 5 {
 		t.Error("Incorrect result!")
 	}
@@ -21,7 +22,7 @@ func TestInterpBinCPlus(t *testing.T) {
 
 func TestInterpBinCMinus(t *testing.T) {
 	b := BinC{"-", NumC{2}, NumC{3}}
-	value := b.Interp().(NumV)
+	value := b.Interp(Env{list.New()}).(NumV)
 	if value.i != -1 {
 		t.Error("Incorrect result!")
 	}
@@ -29,7 +30,7 @@ func TestInterpBinCMinus(t *testing.T) {
 
 func TestInterpBinCTimes(t *testing.T) {
 	b := BinC{"*", NumC{2}, NumC{3}}
-	value := b.Interp().(NumV)
+	value := b.Interp(Env{list.New()}).(NumV)
 	if value.i != 6 {
 		t.Error("Incorrect result!")
 	}
@@ -37,7 +38,7 @@ func TestInterpBinCTimes(t *testing.T) {
 
 func TestInterpBinCDivide(t *testing.T) {
 	b := BinC{"/", NumC{2}, NumC{4}}
-	value := b.Interp().(NumV)
+	value := b.Interp(Env{list.New()}).(NumV)
 	if value.i != 0.5 {
 		t.Error("Incorrect result!")
 	}
@@ -45,7 +46,7 @@ func TestInterpBinCDivide(t *testing.T) {
 
 func TestInterpBinCDivideByZero(t *testing.T) {
 	b := BinC{"/", NumC{1}, NumC{0}}
-	value := b.Interp().(NumV)
+	value := b.Interp(Env{list.New()}).(NumV)
 	if ! math.IsInf(value.i, 1) {
 		t.Error("Div by zero isn't nan")
 	}
@@ -53,13 +54,13 @@ func TestInterpBinCDivideByZero(t *testing.T) {
 
 func TestInterpBinCEq(t *testing.T) {
 	b := BinC{"eq?", NumC{2}, NumC{4}}
-	value := b.Interp().(BoolV)
+	value := b.Interp(Env{list.New()}).(BoolV)
 	if value.b {
 		t.Error("Unequal are equal!")
 	}
 
 	b = BinC{"eq?", NumC{3}, NumC{3}}
-	value = b.Interp().(BoolV)
+	value = b.Interp(Env{list.New()}).(BoolV)
 	if ! value.b {
 		t.Error("Equal are unequal!")
 	}
@@ -79,6 +80,7 @@ func TestStringBoolV(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
 func TestInterpIfCTrue(t *testing.T) {
     n := &ifC{true, NumC{1}, NumC{2}}
     value := n.Interp().(NumV)
@@ -93,4 +95,12 @@ func TestInterpIfCFalse(t *testing.T) {
     if value.i != 2 {
         t.Error("Incorrect result!")
     }
+=======
+func TestAppC(t *testing.T) {
+	c := CloV{list.New(), BinC{"+", NumC{3}, NumC{5}}, Env{list.New()}}
+	a := AppC{c, list.New()}
+	if a.Interp(Env{list.New()}).(NumV).i != 8 {
+		t.Error("Incorrect number output from NumV")
+	}
+>>>>>>> added AppC implementation and tests
 }
