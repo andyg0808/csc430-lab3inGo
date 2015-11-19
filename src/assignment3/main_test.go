@@ -25,3 +25,12 @@ func TestInterpBinCMinus(t *testing.T) {
 		t.Error("Incorrect result!")
 	}
 }
+
+func TestInterpBinCTimes(t *testing.T) {
+	b := BinC{"*", NumC{2}, NumC{3}}
+	value := b.Interp().(NumV)
+	if value.i != 6 {
+		t.Error("Incorrect result!")
+	}
+}
+

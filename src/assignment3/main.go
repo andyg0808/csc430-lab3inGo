@@ -40,6 +40,8 @@ func (b BinC) Interp() Value {
 		return NumV{vL.(NumV).i + vR.(NumV).i}
 	case "-":
 		return NumV{vL.(NumV).i - vR.(NumV).i}
+	case "*":
+		return NumV{vL.(NumV).i * vR.(NumV).i}
 	}
 	panic("Unknown binop")
 }
