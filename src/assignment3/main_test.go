@@ -78,3 +78,19 @@ func TestStringBoolV(t *testing.T) {
 		t.Error("Incorrect string output from BoolV")
 	}
 }
+
+func TestInterpIfCTrue(t *testing.T) {
+    n := &ifC{true, NumC{1}, NumC{2}}
+    value := n.Interp().(NumV)
+    if value.i != 1 {
+        t.Error("Incorrect result!")
+    }
+}
+
+func TestInterpIfCFalse(t *testing.T) {
+    n := &ifC{false, NumC{1}, NumC{2}}
+    value := n.Interp().(NumV)
+    if value.i != 2 {
+        t.Error("Incorrect result!")
+    }
+}
