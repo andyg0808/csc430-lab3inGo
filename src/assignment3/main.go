@@ -9,7 +9,7 @@ type Value fmt.Stringer
 
 type ExprC interface {
 	Interp() Value
-	Interp(env Env) Value
+	//Interp(env Env) Value
 }
 
 type NumV struct {
@@ -22,10 +22,6 @@ type BoolV struct {
 
 func (n NumV) String() string {
 	return fmt.Sprint(n.i)
-}
-
-type BoolV struct {
-	b bool
 }
 
 func (b BoolV) String() string {
@@ -102,7 +98,9 @@ type AppC struct {
 	arg list.List
 }
 
-func (a AppC) Interp(env Env) Value {
+//COMMENTED OUT FOR NOW SO IT RUNS
+
+/*func (a AppC) Interp(env Env) Value {
 	f := a.fun.Interp()
 	switch f := f.(type) {
 	case CloV:
@@ -116,7 +114,7 @@ func (a AppC) Interp(env Env) Value {
 
 func (a.AppC) Interp(params list.List, arg list.List, env Env) Value {
 
-}
+}*/
 
 func main() {
 	b := &BinC{"+", NumC{1}, NumC{2}}
