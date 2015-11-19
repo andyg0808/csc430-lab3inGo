@@ -11,7 +11,7 @@ type ExprC interface {
 }
 
 type NumV struct {
-	i int
+	i float64
 }
 
 func (n NumV) String() string {
@@ -19,7 +19,7 @@ func (n NumV) String() string {
 }
 
 type NumC struct {
-	X int
+	X float64
 }
 
 func (n NumC) Interp() Value {
