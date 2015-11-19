@@ -35,7 +35,13 @@ type BinC struct {
 func (b BinC) Interp() Value {
 	vL := b.L.Interp()
 	vR := b.R.Interp()
-	return NumV{vL.(NumV).i + vR.(NumV).i}
+	switch b.op {
+	case "+":
+		return NumV{vL.(NumV).i + vR.(NumV).i}
+	case "-":
+		return NumV{vL.(NumV).i - vR.(NumV).i}
+	}
+	panic("Unknown binop")
 }
 
 func main() {
@@ -43,4 +49,3 @@ func main() {
 	fmt.Println(b)
 	fmt.Println(NumC{1}.Interp())
 }
-
