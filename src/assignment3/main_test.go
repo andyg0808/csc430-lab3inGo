@@ -80,7 +80,6 @@ func TestStringBoolV(t *testing.T) {
 	}
 }
 
-<<<<<<< HEAD
 func TestInterpIfCTrue(t *testing.T) {
     n := &ifC{true, NumC{1}, NumC{2}}
     value := n.Interp().(NumV)
@@ -95,12 +94,11 @@ func TestInterpIfCFalse(t *testing.T) {
     if value.i != 2 {
         t.Error("Incorrect result!")
     }
-=======
+
 func TestAppC(t *testing.T) {
 	c := CloV{list.New(), BinC{"+", NumC{3}, NumC{5}}, Env{list.New()}}
 	a := AppC{c, list.New()}
 	if a.Interp(Env{list.New()}).(NumV).i != 8 {
 		t.Error("Incorrect number output from NumV")
 	}
->>>>>>> added AppC implementation and tests
 }
