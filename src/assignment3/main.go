@@ -11,7 +11,7 @@ type ExprC interface {
 }
 
 type NumV struct {
-	i int
+	i float64
 }
 
 type BoolV struct {
@@ -22,8 +22,16 @@ func (n NumV) String() string {
 	return fmt.Sprint(n.i)
 }
 
+type BoolV struct {
+	b bool
+}
+
+func (b BoolV) String() string {
+	return fmt.Sprint(b.b)
+}
+
 type NumC struct {
-	X int
+	X float64
 }
 
 func (n NumC) Interp() Value {
@@ -51,9 +59,21 @@ func (i ifC) Interp() Value {
 }
 
 func (b BinC) Interp() Value {
-    vL := b.L.Interp()
-    vR := b.R.Interp()
-    return NumV{vL.(NumV).i + vR.(NumV).i}
+	vL := b.L.Interp()
+	vR := b.R.Interp()
+	switch b.op {
+	case "+":
+		return NumV{vL.(NumV).i + vR.(NumV).i}
+	case "-":
+		return NumV{vL.(NumV).i - vR.(NumV).i}
+	case "*":
+		return NumV{vL.(NumV).i * vR.(NumV).i}
+	case "/":
+		return NumV{vL.(NumV).i / vR.(NumV).i}
+	case "eq?":
+		return BoolV{vL == vR}
+	}
+	panic("Unknown binop")
 }
 
 func main() {
@@ -72,7 +92,3 @@ func main() {
     fmt.Println(d.Interp())
 
 }
-
-
-
-
