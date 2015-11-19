@@ -18,6 +18,14 @@ func (n NumV) String() string {
 	return fmt.Sprint(n.i)
 }
 
+type BoolV struct {
+	b bool
+}
+
+func (b BoolV) String() string {
+	return fmt.Sprint(b.b)
+}
+
 type NumC struct {
 	X float64
 }

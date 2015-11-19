@@ -58,3 +58,10 @@ func TestStringNumV(t *testing.T) {
 		t.Error("Incorrect string output from NumV")
 	}
 }
+
+func TestStringBoolV(t *testing.T) {
+	b := BoolV{true}
+	if b.String() != "true" {
+		t.Error("Incorrect string output from BoolV")
+	}
+}
