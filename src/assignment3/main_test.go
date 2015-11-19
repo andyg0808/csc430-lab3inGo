@@ -51,3 +51,10 @@ func TestInterpBinCDivideByZero(t *testing.T) {
 	}
 }
 
+
+func TestStringNumV(t *testing.T) {
+	n := NumV{1}
+	if n.String() != "1" {
+		t.Error("Incorrect string output from NumV")
+	}
+}
