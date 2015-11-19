@@ -58,6 +58,15 @@ func (i ifC) Interp() Value {
     return i.Y.Interp()
 }
 
+type idC struct {
+    S string
+}
+
+func (i idC) Interp() Value {
+    fmt.Println(i.Interp())
+    panic("ahh")
+}
+
 func (b BinC) Interp() Value {
 	vL := b.L.Interp()
 	vR := b.R.Interp()
@@ -77,18 +86,6 @@ func (b BinC) Interp() Value {
 }
 
 func main() {
-	b := &BinC{"+", NumC{1}, NumC{2}}
 
-    c := &ifC{true, NumC{1}, NumC{2}}
-    d := &ifC{false, NumC{1}, NumC{2}}
-
-    fmt.Println(b)
-    fmt.Println(b.Interp())
-
-    fmt.Println(c)
-    fmt.Println(c.Interp())
-
-    fmt.Println(d)
-    fmt.Println(d.Interp())
 
 }
