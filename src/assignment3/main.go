@@ -52,6 +52,8 @@ func (b BinC) Interp() Value {
 		return NumV{vL.(NumV).i * vR.(NumV).i}
 	case "/":
 		return NumV{vL.(NumV).i / vR.(NumV).i}
+	case "eq?":
+		return BoolV{vL == vR}
 	}
 	panic("Unknown binop")
 }

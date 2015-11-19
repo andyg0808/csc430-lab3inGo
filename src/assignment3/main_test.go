@@ -51,6 +51,19 @@ func TestInterpBinCDivideByZero(t *testing.T) {
 	}
 }
 
+func TestInterpBinCEq(t *testing.T) {
+	b := BinC{"eq?", NumC{2}, NumC{4}}
+	value := b.Interp().(BoolV)
+	if value.b {
+		t.Error("Unequal are equal!")
+	}
+
+	b = BinC{"eq?", NumC{3}, NumC{3}}
+	value = b.Interp().(BoolV)
+	if ! value.b {
+		t.Error("Equal are unequal!")
+	}
+}
 
 func TestStringNumV(t *testing.T) {
 	n := NumV{1}
